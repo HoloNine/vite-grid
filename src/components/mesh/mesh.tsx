@@ -1,11 +1,6 @@
 import "./mesh.css";
 
-type MeshProps = {
-  columns: number;
-  rows: number;
-};
-
-const Mesh = ({ columns, rows, ...props }: MeshProps) => {
+const Mesh = () => {
   return <div className="mesh">Mesh</div>;
 };
 

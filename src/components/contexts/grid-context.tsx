@@ -1,17 +1,9 @@
-import { createContext, useState, ReactNode } from "react";
-
-type GridType = {
-  columns: number;
-  rows: number;
-};
+import { createContext } from "react";
+import { GridType } from "../types/grid";
 
 type GridContextType = {
   grid: GridType | null;
   setGrid: (grid: GridType) => void;
-};
-
-type GridProviderProps = {
-  children: ReactNode;
 };
 
 /**
@@ -22,20 +14,4 @@ const GridContext = createContext<GridContextType>({
   setGrid: () => {},
 });
 
-/**
- * Provides the grid context to its children components.
- *
- * @param {GridProviderProps} props - The props for the GridProvider component.
- * @returns {JSX.Element} The rendered GridProvider component.
- */
-const GridProvider = ({ children }: GridProviderProps) => {
-  const [grid, setGrid] = useState<GridType | null>(null);
-
-  return (
-    <GridContext.Provider value={{ grid, setGrid }}>
-      {children}
-    </GridContext.Provider>
-  );
-};
-
-export { GridContext, GridProvider };
+export { GridContext };
