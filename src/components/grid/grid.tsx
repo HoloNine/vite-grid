@@ -8,6 +8,7 @@ import "./grid.css";
 type GridProps = {
   columns: number;
   rows: number;
+  gap?: number;
   children: ReactNode;
 };
 
@@ -21,20 +22,19 @@ type GridProps = {
  * @param {ReactNode} props.children - The child components to render within the grid.
  * @returns {JSX.Element} The rendered grid component.
  */
-const Grid = ({ columns, rows, children }: GridProps) => {
+const Grid = ({ columns, rows, gap = 0, children }: GridProps) => {
   const [grid, setGrid] = useState<GridType | null>(null);
 
-  const memoizedGrid = useMemo(() => ({ columns, rows }), [columns, rows]);
+  const memoizedGrid = useMemo(
+    () => ({ columns, rows, gap }),
+    [columns, rows, gap]
+  );
 
   useEffect(() => {
     setGrid(memoizedGrid);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [columns, rows]);
-
-  useEffect(() => {
-    console.log("Grid: ", grid);
-  }, [grid]);
+  }, [memoizedGrid]);
 
   return (
     <GridContext.Provider value={{ grid, setGrid }}>
