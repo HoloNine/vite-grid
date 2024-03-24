@@ -1,5 +1,7 @@
+import "./drop-target.css";
+
 const DropTarget = () => {
-  return <div>Drop target</div>;
+  return <div className="drop-target">Drop target</div>;
 };
 
 export default DropTarget;

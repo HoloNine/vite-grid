@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { GridContext } from "../contexts/grid-context";
 
 import "./mesh.css";
+import { DropTarget } from "../drop-target";
 
 const meshStyles = (columns: number, rows: number, gap: number) => {
   return {
@@ -35,35 +36,36 @@ const calculateCellLines = (
 const Mesh = () => {
   const { grid } = useContext(GridContext);
 
-  const [meshColumns, setMeshColumns] = useState<number>(1);
-  const [meshRows, setMeshRows] = useState<number>(1);
-  const [meshGap, setMeshGap] = useState<number>(0);
+  const [gridCoordinates, setGridCoordinates] = useState<CellLines[]>([]);
 
   useEffect(() => {
     if (grid) {
-      setMeshColumns(grid.columns);
-      setMeshRows(grid.rows);
-      setMeshGap(grid.gap);
+      const newGridCoordinates: CellLines[] = [];
+      for (let row = 0; row < grid.rows; row++) {
+        for (let column = 0; column < grid.columns; column++) {
+          const cellLines = calculateCellLines(row, column);
+          newGridCoordinates.push(cellLines);
+        }
+      }
+
+      setGridCoordinates(newGridCoordinates);
     }
   }, [grid]);
-
-  useEffect(() => {
-    const cellCoordinates = [];
-    for (let row = 0; row < meshRows; row++) {
-      for (let column = 0; column < meshColumns; column++) {
-        cellCoordinates.push(calculateCellLines(row, column));
-      }
-    }
-
-    console.log(cellCoordinates);
-  }, [meshColumns, meshRows]);
 
   return (
     <div
       className={"mesh"}
-      style={{ ...meshStyles(meshColumns, meshRows, meshGap) }}
+      style={{
+        ...meshStyles(
+          grid ? grid.columns : 1,
+          grid ? grid.rows : 1,
+          grid ? grid.gap : 0
+        ),
+      }}
     >
-      Mesh
+      {gridCoordinates.map((cellLines, index) => (
+        <DropTarget key={index} />
+      ))}
     </div>
   );
 };
